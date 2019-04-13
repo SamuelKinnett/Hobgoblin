@@ -3,6 +3,8 @@ using OpenGL;
 
 using Hobgoblin.Glfw;
 using Hobgoblin.Glfw.Enums;
+using Hobgoblin.Input.Abstract;
+using Hobgoblin.Input.Concrete;
 using Hobgoblin.Scenes.Abstract;
 using Hobgoblin.Scenes.Concrete;
 
@@ -15,6 +17,7 @@ namespace Hobgoblin
 
         private int windowWidth, windowHeight;
         private IntPtr window;
+        private IInputManager inputManager;
 
         private bool initialised = false;
 
@@ -24,6 +27,7 @@ namespace Hobgoblin
             this.windowHeight = windowHeight;
 
             Scenes = new SceneManager();
+            inputManager = new InputManager();
         }
 
         public void Initialise()
@@ -47,8 +51,6 @@ namespace Hobgoblin
 
             GLFW.MakeContextCurrent(window);
 
-            GLFW.SetWindowSizeCallback(window, ResizeTest);
-
             Gl.Viewport(0, 0, windowWidth, windowHeight);
 
             initialised = true;
@@ -61,9 +63,12 @@ namespace Hobgoblin
             }
 
             Scenes.SwitchScene("MAIN", window);
+            GLFW.SetWindowSizeCallback(
+                window, Scenes.CurrentScene.WindowSizeFunction);
 
-            while(GLFW.WindowShouldClose(window) == 0) {
-                Scenes.CurrentScene.Update();
+            while (GLFW.WindowShouldClose(window) == 0) {
+                inputManager.Update();
+                Scenes.CurrentScene.Update(inputManager, window);
                     
                 Gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
                 Gl.Clear(ClearBufferMask.ColorBufferBit);
@@ -73,20 +78,21 @@ namespace Hobgoblin
 
                 GLFW.SwapBuffers(window);
                 GLFW.PollEvents();
+
+                if (Scenes.CurrentScene.ChangeScene) {
+                    if (Scenes.CurrentScene.NextScene == null) {
+                        GLFW.SetWindowShouldClose(window, true);
+                    } else {
+                        Scenes.SwitchScene(
+                            Scenes.CurrentScene.NextScene, window);
+                    }
+                }
             }
         }
 
         public void Dispose()
         {
             GLFW.Terminate();
-        }
-
-        public void ResizeTest(IntPtr window, int windowWidth, int windowHeight)
-        {
-            this.windowWidth = windowWidth;
-            this.windowHeight = windowHeight;
-
-            Gl.Viewport(0, 0, windowWidth, windowHeight);
         }
     }
 }

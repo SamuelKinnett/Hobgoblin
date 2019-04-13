@@ -45,12 +45,18 @@ namespace Hobgoblin.Glfw
         public static extern WindowSizeFunction SetWindowSizeCallback(
             IntPtr window, WindowSizeFunction cbfun);
 
+
+
         // Private
         [DllImport(GLFW_DLL, EntryPoint = "glfwWindowHint")]
         private static extern void WindowHint(Int32 hint, Int32 value);
 
         [DllImport(GLFW_DLL, EntryPoint = "glfwGetKey")]
         private static extern int GetKey(IntPtr window, int key);
+
+        [DllImport(GLFW_DLL, EntryPoint = "glfwSetWindowShouldClose")]
+        private static extern void SetWindowShouldClose(
+            IntPtr window, int value);
 
         public static void WindowHint(WindowHint hint, int value)
         {
@@ -70,6 +76,11 @@ namespace Hobgoblin.Glfw
         public static bool GetKey(IntPtr window, Key key)
         {
             return GetKey(window, (int)key) == 1;
+        }
+
+        public static void SetWindowShouldClose(IntPtr window, bool value)
+        {
+            SetWindowShouldClose(window, value ? 1 : 0);
         }
     }
 }

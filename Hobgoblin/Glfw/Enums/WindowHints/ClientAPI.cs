@@ -1,4 +1,4 @@
-﻿namespace Hobgoblin.Glfw.Enums
+﻿namespace Hobgoblin.Glfw.Enums.WindowHints
 {
     public enum ClientAPI
     {

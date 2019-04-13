@@ -26,7 +26,10 @@ namespace Hobgoblin.Scenes.Concrete
             var oldScene = CurrentScene;
             CurrentScene = scenes[sceneName];
             CurrentScene.Load(window);
-            oldScene.UnLoad();
+
+            if (oldScene != null) {
+                oldScene.UnLoad();
+            }
         }
     }
 }
