@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Hobgoblin.Glfw.Delegates;
 using Hobgoblin.Glfw.Enums;
+using Hobgoblin.Glfw.Enums.Input;
 
 namespace Hobgoblin.Glfw
 {
@@ -48,6 +49,9 @@ namespace Hobgoblin.Glfw
         [DllImport(GLFW_DLL, EntryPoint = "glfwWindowHint")]
         private static extern void WindowHint(Int32 hint, Int32 value);
 
+        [DllImport(GLFW_DLL, EntryPoint = "glfwGetKey")]
+        private static extern int GetKey(IntPtr window, int key);
+
         public static void WindowHint(WindowHint hint, int value)
         {
             WindowHint((Int32)hint, value);
@@ -61,6 +65,11 @@ namespace Hobgoblin.Glfw
         public static void WindowHint(WindowHint hint, Enum value)
         {
             WindowHint((Int32)hint, (Int32)(object)value);
+        }
+
+        public static bool GetKey(IntPtr window, Key key)
+        {
+            return GetKey(window, (int)key) == 1;
         }
     }
 }

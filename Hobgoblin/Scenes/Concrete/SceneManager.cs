@@ -18,11 +18,7 @@ namespace Hobgoblin.Scenes.Concrete
 
         public void AddScene(string sceneName, IScene scene)
         {
-            if (scenes.ContainsKey(sceneName)) {
-                scenes[sceneName] = scene;
-            } else {
-                scenes.Add(sceneName, scene);
-            }
+            scenes[sceneName] = scene;
         }
 
         public void SwitchScene(string sceneName, IntPtr window)

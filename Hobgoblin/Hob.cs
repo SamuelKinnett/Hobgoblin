@@ -3,11 +3,14 @@ using OpenGL;
 
 using Hobgoblin.Glfw;
 using Hobgoblin.Glfw.Enums;
+using Hobgoblin.Scenes.Abstract;
+using Hobgoblin.Scenes.Concrete;
 
 namespace Hobgoblin
 {
     public class Hob : IDisposable
     {
+        public ISceneManager Scenes { get; private set; }
         private const string GLFW_DLL = "libs/glfw3";
 
         private int windowWidth, windowHeight;
@@ -19,6 +22,8 @@ namespace Hobgoblin
         {
             this.windowWidth = windowWidth;
             this.windowHeight = windowHeight;
+
+            Scenes = new SceneManager();
         }
 
         public void Initialise()
@@ -55,11 +60,16 @@ namespace Hobgoblin
                 Initialise();
             }
 
+            Scenes.SwitchScene("MAIN", window);
+
             while(GLFW.WindowShouldClose(window) == 0) {
+                Scenes.CurrentScene.Update();
+                    
                 Gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
                 Gl.Clear(ClearBufferMask.ColorBufferBit);
 
                 // Drawing
+                Scenes.CurrentScene.Render();
 
                 GLFW.SwapBuffers(window);
                 GLFW.PollEvents();

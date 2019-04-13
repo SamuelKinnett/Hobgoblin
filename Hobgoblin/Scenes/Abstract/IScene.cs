@@ -9,5 +9,7 @@ namespace Hobgoblin.Scenes.Abstract
 
         void Load(IntPtr window);
         void UnLoad();
+        void Update();
+        void Render();
     }
 }
