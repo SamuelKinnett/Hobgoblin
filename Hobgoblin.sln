@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hobgoblin", "Hobgoblin\Hobgoblin.csproj", "{EB9CF38B-7E4E-4DD3-811E-6F52A8CF0690}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{1E8C8800-BBAD-4792-B194-1FB968290377}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB9CF38B-7E4E-4DD3-811E-6F52A8CF0690}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB9CF38B-7E4E-4DD3-811E-6F52A8CF0690}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB9CF38B-7E4E-4DD3-811E-6F52A8CF0690}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB9CF38B-7E4E-4DD3-811E-6F52A8CF0690}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E8C8800-BBAD-4792-B194-1FB968290377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E8C8800-BBAD-4792-B194-1FB968290377}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E8C8800-BBAD-4792-B194-1FB968290377}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E8C8800-BBAD-4792-B194-1FB968290377}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBE60A9A-1B6A-4F42-A39F-9CCE66E328FA}
+	EndGlobalSection
+EndGlobal
