@@ -13,6 +13,8 @@ namespace Hobgoblin
         private int windowWidth, windowHeight;
         private IntPtr window;
 
+        private bool initialised = false;
+
         public Hob(int windowWidth, int windowHeight)
         {
             this.windowWidth = windowWidth;
@@ -43,10 +45,16 @@ namespace Hobgoblin
             GLFW.SetWindowSizeCallback(window, ResizeTest);
 
             Gl.Viewport(0, 0, windowWidth, windowHeight);
+
+            initialised = true;
         }
 
         public void Run()
         {
+            if (!initialised) {
+                Initialise();
+            }
+
             while(GLFW.WindowShouldClose(window) == 0) {
                 Gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
                 Gl.Clear(ClearBufferMask.ColorBufferBit);
