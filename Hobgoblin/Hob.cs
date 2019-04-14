@@ -7,6 +7,10 @@ using Hobgoblin.Input.Abstract;
 using Hobgoblin.Input.Concrete;
 using Hobgoblin.Scenes.Abstract;
 using Hobgoblin.Scenes.Concrete;
+using Hobgoblin.Graphics.Shaders.Abstract;
+using Hobgoblin.Graphics.Shaders.Concrete;
+using Hobgoblin.Graphics.Shaders;
+using Hobgoblin.Graphics.Primitives;
 
 namespace Hobgoblin
 {
@@ -18,8 +22,19 @@ namespace Hobgoblin
         private int windowWidth, windowHeight;
         private IntPtr window;
         private IInputManager inputManager;
+        private IShaderManager shaderManager;
+
+        private uint shaderProgram;
+        private uint vao;
 
         private bool initialised = false;
+
+        // TESTING
+        private Triangle triangle = new Triangle(
+            new Vector3(-0.5f, -0.5f, 0.0f),
+                new Vector3(0.5f, -0.5f, 0.0f),
+                new Vector3(0.0f, 0.5f, 0.0f));
+        // END TESTING
 
         public Hob(int windowWidth, int windowHeight)
         {
@@ -28,10 +43,12 @@ namespace Hobgoblin
 
             Scenes = new SceneManager();
             inputManager = new InputManager();
+            shaderManager = new ShaderManager();
         }
 
         public void Initialise()
         {
+            Gl.Initialize();
             GLFW.Init();
             GLFW.WindowHint(WindowHint.ContextVersionMajor, 3);
             GLFW.WindowHint(WindowHint.ContextVersionMinor, 3);
@@ -50,8 +67,32 @@ namespace Hobgoblin
             }
 
             GLFW.MakeContextCurrent(window);
-
             Gl.Viewport(0, 0, windowWidth, windowHeight);
+
+            var vertexShader = shaderManager.CreateShader(
+                new BasicVertexShader());
+            var fragmentShader = shaderManager.CreateShader(
+                new BasicFragmentShader());
+            shaderProgram = shaderManager.CreateShaderProgram(
+                new uint[] {
+                    vertexShader,
+                    fragmentShader
+                });
+
+            // Setup buffers
+
+            vao = Gl.GenVertexArray();
+            var vbo = Gl.GenBuffer();
+
+            Gl.BindVertexArray(vao);
+            Gl.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            Gl.BufferData(BufferTarget.ArrayBuffer, (uint)(4 * triangle.Vertices.Length), triangle.Vertices, BufferUsage.StaticDraw);
+
+            Gl.VertexAttribPointer(0, 3, VertexAttribType.Float, false, 3 * sizeof(float), IntPtr.Zero);
+            Gl.EnableVertexAttribArray(0);
+
+            Gl.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            Gl.BindVertexArray(0);
 
             initialised = true;
         }
@@ -70,11 +111,14 @@ namespace Hobgoblin
                 inputManager.Update();
                 Scenes.CurrentScene.Update(inputManager, window);
                     
-                Gl.ClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+                Gl.ClearColor(0.2f, 0.2f, 0.2f, 0.0f);
                 Gl.Clear(ClearBufferMask.ColorBufferBit);
 
                 // Drawing
-                Scenes.CurrentScene.Render();
+                Gl.UseProgram(shaderProgram);
+                Gl.BindVertexArray(vao);
+                Gl.DrawArrays(PrimitiveType.Triangles, 0, 3);
+                // Scenes.CurrentScene.Render();
 
                 GLFW.SwapBuffers(window);
                 GLFW.PollEvents();
