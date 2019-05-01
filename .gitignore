@@ -144,4 +144,4 @@ FakesAssemblies/
 *.binlog
 
 # Test project
-TestApp/
+# TestApp/
